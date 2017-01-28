@@ -1,3 +1,8 @@
+# mySql connection settings
+config-mysql.json
+
+db/*.bak
+
 # Logs
 logs
 *.log
