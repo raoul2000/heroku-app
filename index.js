@@ -7,7 +7,10 @@ app.set('port', (process.env.PORT || 5000));
 
 app.use(express.static(__dirname + '/public'));
 
-
+/**
+ * [packageName description]
+ * @type {String}
+ */
 app.get('/packagist/data', function(request, response) {
   var packageName = "raoul2000/yii-simple-workflow";
 
@@ -36,24 +39,16 @@ app.get('/packagist/data', function(request, response) {
   });
 });
 
-
-
+/**
+ *
+ */
 app.get('/packagist', function(request, response) {
-  scraper.packagist.searchPackage('raoul2000')
+
+  scraper.packagist.searchPackageByAuthor('raoul2000') // search packages belonging to a specific user
+  .then(scraper.savePackageList)
   .then(function(result){
-    // prepare record
-    var record = {
-      'date_ts' : Date.now(),
-      'package' : result
-    };
-    var db = new Datastore("./data/packagist.raoul2000.json");
-    db.loadDatabase();
-    db.insert(record,function(err,newDoc){
-      if(err) {
-        response.status(404).json(err);
-      } else {
-        response.status(200).json(result);
-      }
+    response.status(200).json({
+      "result" : result
     });
   })
   .fail(function(error){
@@ -61,6 +56,9 @@ app.get('/packagist', function(request, response) {
   });
 });
 
+/**
+ *
+ */
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });

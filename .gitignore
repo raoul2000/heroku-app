@@ -1,6 +1,6 @@
 # mySql connection settings
 config-mysql.json
-
+setenv-prod.bat
 db/*.bak
 
 # Logs

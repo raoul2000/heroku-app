@@ -1,19 +1,49 @@
-var mysql = require('mysql');
-var config = require('../../config.json')
+"use strict";
 
-var mySqlClient = mysql.createConnection(config.db);
+const mysql  = require('mysql');
+const config = require('../../config.json');
+const Q      = require('q');
+const process = require('process');
 
-var selectQuery = "select * from packagist_stat";
+var connectionDb ;
+if( process.env.ENV_NAME === "prod" ) {
+  connectionDb = {
+    "host"     : process.env.DB_HOST,
+    "user"     : process.env.DB_USER,
+    "password" : process.env.DB_PASSWORD,
+    "database" : process.env.DB_NAME
+  };
+} else {
+  connectionDb = config.db;
+}
 
-mySqlClient.query(selectQuery, function(error, results, fields){
-  if(error) {
-    console.error(error);
-  } else if (results.length !== 0) {
-    results.forEach(function(result){
-      console.log(result.id);
+/**
+ * [savePackageList description]
+ * @param  {[type]} data [description]
+ * @return {[type]}      [description]
+ */
+function savePackageList(data) {
+
+  var tsNow = Math.floor(new Date() / 1000);
+  var records = data.map(function(item){
+    return [ item.package_name, item.download, item.star, tsNow];
+  });
+
+  console.log(records);
+  return Q.Promise(function(resolve, reject) {
+
+    var mySqlClient = mysql.createConnection(connectionDb);
+
+    var query = mySqlClient.query('INSERT INTO packagist_stat '
+    +' (package_name, download, star, create_time) VALUES ?', [records], function (error, results, fields) {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(results);
+        mySqlClient.end();
+      }
     });
-  } else {
-    console.log("no result");
-  }
-  mySqlClient.end();
-});
+  });
+}
+
+exports.savePackageList = savePackageList;

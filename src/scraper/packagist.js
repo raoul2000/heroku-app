@@ -10,7 +10,7 @@ const Q = require('q');
  * @param  {string} query the search criteria
  * @return {Promise}       the result
  */
-function searchPackage(query) {
+function searchPackageByAuthor(query) {
 
   return Q.Promise(function(resolve,reject){
 
@@ -36,11 +36,12 @@ function searchPackage(query) {
                 let starCount = row.find('i.glyphicon-star ').parent().text();
 
                 result.push({
-                    "name"    : name,
-                    "download": convertToInt(downloadCount),
-                    "star"    : convertToInt(starCount)
+                    "package_name"  : name,
+                    "download"      : convertToInt(downloadCount),
+                    "star"          : convertToInt(starCount)
                 });
             });
+            console.log(result);
             resolve(result);
         } else {
           reject(error);
@@ -49,4 +50,4 @@ function searchPackage(query) {
   }); // promise
 }
 
-exports.searchPackage = searchPackage;
+exports.searchPackageByAuthor = searchPackageByAuthor;
