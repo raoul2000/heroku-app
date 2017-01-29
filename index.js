@@ -13,12 +13,20 @@ app.use(express.static(__dirname + '/public'));
  */
 app.get('/packagist/data', function(request, response) {
   var packageName = "raoul2000/yii-simple-workflow";
+/*
+  scraper.readPackageDataByName("raoul2000/yii-simple-workflow")
+  .then(function(result){
 
+  })
+  .catch(function(error){
+    response.status(500).json(error);
+
+  });
+  */
   var db = new Datastore("./data/packagist.raoul2000.json");
   db.loadDatabase();
   db.find({ "package.name" : packageName }, function(err, docs){
     if(err) {
-      response.status(404).json(err);
     } else {
       var dataset = docs.map(function(doc){
         for (var i = 0; i < doc.package.length; i++) {
