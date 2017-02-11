@@ -30,8 +30,11 @@ function savePackageList(data) {
   });
   return axios.all(requests)
   .then(function(result){
-    //console.log(result);
+    console.log(result);
     return "ok";
+  })
+  .catch(function(error){
+    console.error(error);
   });
 }
 
