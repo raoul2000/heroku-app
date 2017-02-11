@@ -1,5 +1,6 @@
 var packagist = require('./packagist.js');
 var mysql = require('./my-sql.js');
+var rest = require('./rest.js');
 
 exports.packagist = packagist;
-exports.savePackageList = mysql.savePackageList;
+exports.savePackageList = rest.savePackageList;
