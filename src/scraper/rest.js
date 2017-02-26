@@ -26,16 +26,18 @@ function savePackageList(data) {
         "download"     : item.download,
         "star"         : item.star,
         "create_time"  : tsNow
-      }, {
-        "headers" : {
-          "Content-Type" : "application/x-www-form-urlencoded"
-        }
       });
   });
   return axios.all(requests)
   .then(function(result){
     console.log(result);
-    return data;
+    return result.map(function(resp){
+      return {
+        "status" : resp.status,
+        "statusText" : resp.statusText,
+        "data" : resp.data
+      };
+    });
   })
   .catch(function(error){
     console.error(error);
