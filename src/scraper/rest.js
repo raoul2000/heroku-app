@@ -14,7 +14,7 @@ var axios  = require('axios');
  */
 function savePackageList(data) {
 
-  var baseURL = "http://localhost/dev/yii2-rest-app/web"; // default
+  var baseURL = "http://localhost/dev/yii2-app/web"; // default
   if( process.env.ENV_NAME === "prod" ) {
     baseURL = process.env.REST_BASE_URL;
   }
@@ -26,12 +26,16 @@ function savePackageList(data) {
         "download"     : item.download,
         "star"         : item.star,
         "create_time"  : tsNow
+      }, {
+        "headers" : {
+          "Content-Type" : "application/x-www-form-urlencoded"
+        }
       });
   });
   return axios.all(requests)
   .then(function(result){
     console.log(result);
-    return "ok";
+    return data;
   })
   .catch(function(error){
     console.error(error);
