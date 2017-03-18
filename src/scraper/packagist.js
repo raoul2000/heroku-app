@@ -3,7 +3,16 @@
 const request = require('request');
 const cheerio = require('cheerio');
 const Q = require('q');
+/**
+ */
 
+/**
+ * the 'download' and 'star' count contain space character and non ascci chars
+ * like &thinsp; : we must remove them before being able to convert to int
+ *
+ * @param  {string} str thie string to convert to Int
+ * @return {numeric}    integer value
+ */
 function convertToInt(str) {
   return parseInt(str.replace(/[^\x00-\x7F]/g, '').replace(" ", ""), 10);
 }
@@ -71,30 +80,22 @@ function getPackagesFacts(packageNames) {
 exports.getPackagesFacts = getPackagesFacts;
 
 /**
- * Fetch package list for a given query string search criteria
+* GEt the list of packages owned by a user
  *
- * @param  {string} query the search criteria
+ * @param  {string} authorName packge author name
  * @return {Promise}       the result
  */
-function searchPackageByAuthor(query) {
+function searchPackageByAuthor(authorName) {
 
   return Q.Promise(function(resolve,reject){
 
-    let url = "https://packagist.org/search/?q=" + query;
+    let url = "https://packagist.org/packages/"+authorName+"/";
     let result = [];
     request(url, function(error, response, html) {
         if (!error && response.statusCode === 200) {
-            /**
-             * the 'download' and 'star' count contain space character and non ascci chars
-             * like &thinsp; : we must remove them before being able to convert to int
-             */
-            const convertToInt = function(str) {
-                return parseInt(str.replace(/[^\x00-\x7F]/g, '').replace(" ", ""), 10);
-            };
-
             const $ = cheerio.load(html);
 
-            $('div.search-list > ul.packages > li.row').filter(function() {
+            $('section.content > ul.packages > li.row').filter(function() {
                 const row = $(this);
 
                 let name = row.find('h4 > a ').text();

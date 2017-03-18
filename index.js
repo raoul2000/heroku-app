@@ -27,6 +27,7 @@ app.get('/packagist/data', function(request, response) {
   db.loadDatabase();
   db.find({ "package.name" : packageName }, function(err, docs){
     if(err) {
+      throw err;
     } else {
       var dataset = docs.map(function(doc){
         for (var i = 0; i < doc.package.length; i++) {
