@@ -1,4 +1,5 @@
 var express = require('express');
+var bodyParser = require('body-parser');
 var scraper = require('./src/scraper/index');
 var Datastore = require('nedb');
 var app = express();
@@ -6,6 +7,8 @@ var app = express();
 app.set('port', (process.env.PORT || 5000));
 
 app.use(express.static(__dirname + '/public'));
+// parse application/json
+app.use(bodyParser.json());
 
 /**
  * [packageName description]
@@ -62,6 +65,24 @@ app.get('/packagist', function(request, response) {
   })
   .fail(function(error){
     response.status(404).json(error);
+  });
+});
+
+/**
+ * {
+ *  "url" : "http://www.domain.com/etc ..",
+ *  "selector" : "div.title"
+ * }
+ */
+app.post('/scraper', function(request, response) {
+  console.log(request.body);
+  // TODO : validate request body
+  scraper.generic.getSelectorValue(request.body.url, request.body.selector)
+  .then(function(result){
+    response.status(200).json({ "result" : result });
+  })
+  .fail(function(error){
+    response.status(500).json(error);
   });
 });
 
