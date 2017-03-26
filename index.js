@@ -74,6 +74,22 @@ app.get('/packagist', function(request, response) {
  *  "selector" : "div.title"
  * }
  */
+app.post('/scraper/object', function(request, response) {
+  console.log(request.body);
+  // TODO : validate request body
+  scraper.objects.getSelectorObject(
+    request.body.url,
+    request.body.selector,
+    request.body.template
+  )
+  .then(function(result){
+    response.status(200).json({ "result" : result });
+  })
+  .fail(function(error){
+    response.status(500).json(error);
+  });
+});
+
 app.post('/scraper', function(request, response) {
   console.log(request.body);
   // TODO : validate request body

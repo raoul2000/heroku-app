@@ -83,6 +83,7 @@ function getSelectorObject(url, context, template) {
   });
 }
 
+exports.getSelectorObject = getSelectorObject;
 
 
 function getSelectorObject_orig(url, context, properties) {
@@ -115,4 +116,3 @@ function getSelectorObject_orig(url, context, properties) {
     });
   });
 }
-exports.getSelectorObject = getSelectorObject;
