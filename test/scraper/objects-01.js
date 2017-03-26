@@ -20,19 +20,11 @@ describe('objects scraper',function(done){
 		scraper.getSelectorObject(
 			url,
 			"article",
-			{
-				"title" : {
-					"selector" : "a > h2.tt6"
-				},
-				"text" : {
-					"selector" : "p.txt3",
-					"value"    : "html"
-				},
-				"url" : {
-					"selector" : ".alpha.voir_plus > a",
-					"value"    : "@href"
-				}
-			}
+			[
+				{ "name" : "title", "selector" : "a > h2.tt6" , "value" : "text"},
+				{ "name" : "text", "selector"  : "p.txt3"},
+				{ "name" : "url", "selector" : ".alpha.voir_plus > a", "value" : "@href"}
+			]
 		)
 		.then(function(result){
 			console.log(result);
