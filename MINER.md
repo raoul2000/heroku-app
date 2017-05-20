@@ -12,9 +12,13 @@ object
 
 ```
 {
-  "propName1" : {
-    "selector" : "p", // $('p')
-    "value" : "text" // "html", "@attributeName"
+  "title" : {
+    "selector" : "body > div.post > h1",
+    "value" : "[text]" // "html", "@attributeName"
+  },
+  "paragraphs" : {
+    "selector" : "body > div.post > p",
+    "value" : "[text]" // "html", "@attributeName"
   }
 }
 ```
