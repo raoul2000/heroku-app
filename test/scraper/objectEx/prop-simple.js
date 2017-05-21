@@ -14,7 +14,7 @@ describe('objects propetry as simple value',function(done){
 			},
 			"<p> text <b>text 1</b> <b>text 2</b> text</p>"
 		);
-		assert.deepEqual(result, { text : 'text 1text 2'});
+		assert.deepEqual(result, { text : 'text 1'});
 		done();
 	});
 
@@ -26,9 +26,13 @@ describe('objects propetry as simple value',function(done){
 					selector : "p"
 				}
 			},
-			"<p> text <b>bold</b> text</p>"
+			`<div>
+				<p>1. text <b>bold</b> text</p>
+				<p>2. text <b>bold</b> text</p>
+			</div>
+			`
 		);
-		assert.deepEqual(result, { text : 'text bold text'});
+		assert.deepEqual(result, { text : '1. text bold text'});
 		done();
 	});
 

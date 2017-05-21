@@ -14,12 +14,15 @@ function parseString(val) {
 
 /**
  * Parse the type definition string passed as argumet.
- * Valid avlues for type : "text", "[text]", "html", "[html]", "@attr"
+ * Valid avlues for type : "text", ["text"], "html", ["html"], "@attr", ["@attr"]
+ * or any model object "{}" or ["{}"]
+ *
  * Example :
- *   - type = "[text]"
+ *   - type = ["text"]
  *   - result = {
  *      type : "text",
- *      isArray : true
+ *      isArray : true,
+ *      isObject : false
  *     }
  *
  * @param  {string} type the type definition
@@ -69,7 +72,7 @@ function extractPrimitiveValue(valueDef, selector, html) {
           result.push($(elem).text());
         });
       } else {
-        result = parseString($(selector).text());
+        result = $(selector).first().text();
       }
     }
     else if ( valueDef.type === "html") {
@@ -79,7 +82,7 @@ function extractPrimitiveValue(valueDef, selector, html) {
           result.push($(elem).html());
         });
       } else {
-        result = $(selector).html();
+        result = $(selector).first().html();
       }
     }
     else if ( valueDef.type.startsWith('@')) {
@@ -90,7 +93,7 @@ function extractPrimitiveValue(valueDef, selector, html) {
           result.push($(elem).attr(attrName));
         });
       } else {
-        result = $(selector).attr(attrName);
+        result = $(selector).first().attr(attrName);
       }
     }
   } catch (e) {

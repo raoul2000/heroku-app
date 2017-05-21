@@ -1,4 +1,5 @@
 
+
 url : URL of the page to mine
 [object]
 
@@ -12,6 +13,18 @@ object
 
 ```
 {
+  "title" : {
+    "selector" : "body > div.post > h1",
+  }
+}
+
+//result
+{ title : "Title of the first matching result"}
+```
+
+
+```
+{ 
   "title" : {
     "selector" : "body > div.post > h1",
     "value" : ["text"] // "html", "@attributeName"
