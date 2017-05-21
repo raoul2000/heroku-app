@@ -27,27 +27,37 @@ function parseString(val) {
  */
 function parseType(type){
   let result;
-  if(type.startsWith('[') && type.endsWith(']')){
+  if(Array.isArray(type) && type.length > 0) {
     result = {
-      type    : type.substring(1,type.length-1),
-      isArray : true
+      type     : type[0],
+      isArray  : true,
+      isObject : typeof type[0] === 'object'
     };
-  } else {
+  } else if(typeof type === 'string') {
+    if( ! type.startsWith('@') &&
+       ["text", "html" ].indexOf(type) === -1 )
+    {
+      throw new Error("invalid type value : "+type);
+    }
+
     result = {
-      type    : type,
-      isArray : false
+      type     : type,
+      isArray  : false,
+      isObject : false
     };
-  }
-  if( ! result.type.startsWith('@') &&
-     ["text", "html" ].indexOf(result.type) === -1 )
-  {
-    throw new Error("invalid type value : "+type);
+  } else if( typeof type === 'object') {
+    result = {
+      type     : type,
+      isArray  : false,
+      isObject : true
+    };
+  }else {
+    throw new Error("invalid type");
   }
   return result;
 }
 
 function extractPrimitiveValue(valueDef, selector, html) {
-  //console.log(cheerio(selector, html).length);
   const $ = cheerio.load(html);
 
   let result = null;
@@ -86,55 +96,42 @@ function extractPrimitiveValue(valueDef, selector, html) {
   } catch (e) {
     console.error("failed to extract primitive value");
     console.error(e);
+    throw e;
   }
   return result;
 }
 
 function extractProperty(model, html) {
-  
-  if( typeof model !== "object") {
+
+  // validate model
+  if( typeof model !== 'object' ) {
     throw new Error("object expected");
   }
   else if( ! model.hasOwnProperty('selector')) {
-    throw new Error("missing selector");
+    throw new Error("missing selector".type);
   }
-  var type = model.type || "text";
+  // process model
+  var parsedType = parseType(model.type || "text");
 
-  if( typeof type === 'string') {
-    let parsedType = parseType(type);
-    return extractPrimitiveValue(parsedType, model.selector, html);
-  }
-  else if( typeof type === 'object') {
+  if( parsedType.isObject === true) {
     const $ = cheerio.load(html);
-    let objects = [];
-    $(model.selector).each(function(i,elem){
-      objects.push(
-        extractObject(model.type, $(elem).html())
-      );
-    });
-    return objects;
-  } else {
-    throw new Error("invalid property model "+ JSON.stringify(model));
+    if( parsedType.isArray === true ) {
+      let objects = [];
+      $(model.selector).each(function(i,elem){
+        objects.push(
+          extractObject(parsedType.type, $(elem).html())
+        );
+      });
+      return objects;
+    } else {
+      return extractObject(model.type, $(model.selector).first().html());
+    }
   }
-}
-
-
-function extractProperty_orig(model, html) {
-  console.log(model);
-  if( typeof model !== "object") {
-    throw new Error("object expected");
-  }
-
-  if( model.hasOwnProperty('@object')) {
-    return extractObject(model['@object'], html);
-  } else if(model.hasOwnProperty('selector')) {
-    var type = model.type || "text";
-    let parsedType = parseType(type);
+  else {
     return extractPrimitiveValue(parsedType, model.selector, html);
-  } else {
-    throw new Error("invalid property model "+ JSON.stringify(model));
   }
 }
+
 
 function extractObject(model, html) {
   var result = {};

@@ -14,11 +14,11 @@ object
 {
   "title" : {
     "selector" : "body > div.post > h1",
-    "value" : "[text]" // "html", "@attributeName"
+    "value" : ["text"] // "html", "@attributeName"
   },
   "paragraphs" : {
     "selector" : "body > div.post > p",
-    "value" : "[text]" // "html", "@attributeName"
+    "value" : ["text"] // "html", "@attributeName"
   }
 }
 ```
@@ -52,6 +52,24 @@ object
 {
   "propName1" : {
     propName2 : "text value"
+  }
+}
+```
+
+
+```
+{
+  "posts" : {
+    "selector" : 'body > div.list > div.post',
+    "type"    : {
+      "title" : {
+        "selector" : "h1"
+      },
+      "text"  : {
+        "selector" : "div.body > p",
+        "type" : ["text"]
+      }
+    }
   }
 }
 ```

@@ -10,7 +10,7 @@ describe('objects propetry values as array',function(done){
 			{
 				text : {
 					selector : "b",
-					type : "[text]"
+					type : ["text"]
 				}
 			},
 			"<p> text <b>text 1</b> <b>text 2</b> text</p>"
@@ -24,7 +24,7 @@ describe('objects propetry values as array',function(done){
 			{
 				text : {
 					selector : "p > ul > li",
-					type : "[html]"
+					type : ["html"]
 				}
 			},
 			`<p>
@@ -43,7 +43,7 @@ describe('objects propetry values as array',function(done){
 			{
 				text : {
 					selector : "p > ul > li",
-					type : "[@class]"
+					type : ["@class"]
 				}
 			},
 			`<p>
