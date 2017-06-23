@@ -5,7 +5,7 @@ const miner = require('../../../src/scraper/objectEx.js');
 
 describe('objects propetry as object',function(done){
 
-	it('extracts property with type object',function(done){
+	it('extracts property "post" with type object',function(done){
 		let result = miner.mine(
 			{
 				post : {
@@ -48,7 +48,7 @@ describe('objects propetry as object',function(done){
 	});
 
 
-	it('extracts property with type object[]',function(done){
+	it('extracts "post" property with type object[]',function(done){
 		let result = miner.mine(
 			{
 				post : {
@@ -97,7 +97,4 @@ describe('objects propetry as object',function(done){
 				});
 		done();
 	});
-
-
-
 });
