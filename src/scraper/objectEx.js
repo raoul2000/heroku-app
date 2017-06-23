@@ -111,7 +111,7 @@ function extractProperty(model, html) {
     throw new Error("object expected");
   }
   else if( ! model.hasOwnProperty('selector')) {
-    throw new Error("missing selector".type);
+    throw new Error("missing selector");
   }
   // process model
   var parsedType = parseType(model.type || "text");
@@ -135,7 +135,12 @@ function extractProperty(model, html) {
   }
 }
 
-
+/**
+ * Extract all properties defined in the model, from the html
+ * @param  {object} model properties definition
+ * @param  {text} html  the mine
+ * @return {object}       result of the mining
+ */
 function extractObject(model, html) {
   var result = {};
   for (var i = 0; i < Object.keys(model).length; i++) {

@@ -19,7 +19,7 @@ describe('objects propetry as simple value',function(done){
 	});
 
 
-	it('extracts property with type text',function(done){
+	it('extracts first matching selector',function(done){
 		let result = miner.mine(
 			{
 				text : {
@@ -64,7 +64,7 @@ describe('objects propetry as simple value',function(done){
 		done();
 	});
 
-	it('extracts property from multiple attribute value',function(done){
+	it('extracts first matching property from multiple attribute value',function(done){
 		let result = miner.mine(
 			{
 				class : {
