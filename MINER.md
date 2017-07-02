@@ -111,18 +111,18 @@ Now extracts all posts (title and text) : it's *almost* the same as above but th
 
 ```json
 {
-  "post" : [{
+  "post" : {
     "selector" : "body > div.list > div.post",
-    "type"    : {
+    "type"    : [{
       "title" : {
         "selector" : "h1"
       },
       "text"  : {
         "selector" : "div.body > p",
         "type" : ["text"]
-      }
-    }
-  }]
+      } 
+    }]
+  }
 }
 ```
 
