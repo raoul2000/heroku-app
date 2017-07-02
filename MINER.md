@@ -120,7 +120,7 @@ Now extracts all posts (title and text) : it's *almost* the same as above but th
       "text"  : {
         "selector" : "div.body > p",
         "type" : ["text"]
-      } 
+      }
     }]
   }
 }
