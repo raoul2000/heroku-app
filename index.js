@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var scraper = require('./src/scraper/index');
 var Datastore = require('nedb');
+var fs = require('fs');
 var app = express();
 
 app.set('port', (process.env.PORT || 5000));
@@ -10,6 +11,10 @@ app.use(express.static(__dirname + '/public'));
 // parse application/json
 app.use(bodyParser.json());
 
+app.get('/app-info', function(request,response){
+  var pkg = require('./package.json');
+  response.status(200).json(pkg);
+});
 /**
  * [packageName description]
  * @type {String}
