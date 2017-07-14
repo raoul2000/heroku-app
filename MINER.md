@@ -29,6 +29,7 @@ Extracts the title of a post. Only the first matching result is extracted. By de
 }
 ```
 
+
 The result :
 ```json
 {
