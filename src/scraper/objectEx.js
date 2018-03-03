@@ -60,6 +60,13 @@ function parseType(type){
   return result;
 }
 
+/**
+ * [extractPrimitiveValue description]
+ * @param  {[type]} valueDef [description]
+ * @param  {[type]} selector [description]
+ * @param  {[type]} html     [description]
+ * @return {[type]}          [description]
+ */
 function extractPrimitiveValue(valueDef, selector, html) {
   const $ = cheerio.load(html);
 
@@ -104,6 +111,19 @@ function extractPrimitiveValue(valueDef, selector, html) {
   return result;
 }
 
+/**
+ * Extracts a single property from the html string.
+ * model = {
+ *  'selector' : 'div.article', // Mandatory
+ *  'type' : 'text' // optional
+ * }
+ * Note that if model.type is an object, the 'extractObject' function
+ * is called (recursive)
+ *
+ * @param  {object} model object describing the property to extract
+ * @param  {string} html  the HTML string the property is extracted from
+ * @return {object | string}       the property
+ */
 function extractProperty(model, html) {
 
   // validate model
@@ -137,6 +157,7 @@ function extractProperty(model, html) {
 
 /**
  * Extract all properties defined in the model, from the html
+ *
  * @param  {object} model properties definition
  * @param  {text} html  the mine
  * @return {object}       result of the mining
