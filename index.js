@@ -2,10 +2,13 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var scraper = require('./src/scraper/index');
 var Datastore = require('nedb');
+var RED = require("node-red");
 var fs = require('fs');
+var path = require('path');
 var app = express();
 
 app.set('port', (process.env.PORT || 5000));
+app.set('adm_pwd_hash', (process.env.ADM_PWD_HASH || '$2a$08$KD//mbZMjojhGVi8ve3C2etRdem2fAZceJqsud79ATnZcfnjaxHJ2'));
 
 app.use(express.static(__dirname + '/public'));
 // parse application/json
@@ -110,6 +113,30 @@ app.post('/scraper', function(request, response) {
 /**
  *
  */
-app.listen(app.get('port'), function() {
+var server = app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
+
+// install node red middleware
+var settings = {
+    httpAdminRoot:"/red",
+    httpNodeRoot: "/redapi",
+    userDir: path.join(__dirname,"nodered"),
+    functionGlobalContext: { },    // enables global context
+    adminAuth: {
+        type: "credentials",
+        users: [{
+            username: "admin",
+            password: app.get('adm_pwd_hash'),
+            permissions: "*"
+        }]
+    }
+};
+RED.init(server,settings);
+// Serve the editor UI from /red
+app.use(settings.httpAdminRoot,RED.httpAdmin);
+
+// Serve the http nodes UI from /api
+app.use(settings.httpNodeRoot,RED.httpNode);
+
+RED.start();
