@@ -6,6 +6,7 @@ var RED = require("node-red");
 var fs = require('fs');
 var path = require('path');
 var app = express();
+const bob = require('bob-the-miner');
 
 app.set('port', (process.env.PORT || 5000));
 app.set('adm_pwd_hash', (process.env.ADM_PWD_HASH || '$2a$08$KD//mbZMjojhGVi8ve3C2etRdem2fAZceJqsud79ATnZcfnjaxHJ2'));
@@ -106,6 +107,18 @@ app.post('/scraper', function(request, response) {
     response.status(200).json({ "result" : result });
   })
   .fail(function(error){
+    response.status(500).json(error);
+  });
+});
+
+app.post('/bob/v1/work', function(request, response) {
+  console.log(request.body);
+
+  bob.work(request.body.itinerary, request.body.extractionPlan)
+  .then((result)=>{
+    response.status(200).json(result);
+  })
+  .catch((error)=>{
     response.status(500).json(error);
   });
 });
